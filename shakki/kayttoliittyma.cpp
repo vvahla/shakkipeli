@@ -37,8 +37,8 @@ void Kayttoliittyma::piirraLauta()
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);*/
 	
-	wcout << "1 ";
-	int montakoRivia = 1;
+	wcout << "8 ";
+	int montakoRivia = 8;
 
 	for (int x = 7; x >= 0; x--)
 	{
@@ -77,10 +77,10 @@ void Kayttoliittyma::piirraLauta()
 
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-		
-		montakoRivia++;
 
-		if (montakoRivia != 9) {
+		montakoRivia--;
+
+		if (montakoRivia != 0) {
 			wcout << montakoRivia << " ";
 		}
 
