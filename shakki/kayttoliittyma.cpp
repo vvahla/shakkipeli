@@ -36,18 +36,21 @@ void Kayttoliittyma::piirraLauta()
 	/*SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);*/
+	
+	wcout << "8 ";
+	int montakoRivia = 8;
+
 	for (int x = 7; x >= 0; x--)
 	{
 		for (int y = 0; y < 8; y++)
 		{
-
 			if (x % 2 == 1 && y % 2 == 0 || x % 2 == 0 && y % 2 == 1) {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
 			}
 			else {
 				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 			}
-
+			
 			Nappula* n = _asema->_lauta[x][y];
 			if (n == nullptr)
 			{
@@ -73,6 +76,41 @@ void Kayttoliittyma::piirraLauta()
 			}
 
 		}
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
+		montakoRivia--;
+
+		if (montakoRivia != 0) {
+			wcout << montakoRivia << " ";
+		}
+
+	}
+
+
+	//Piirrä laudan pohjalle "ABCDEFGH"
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
+	for (int i = 0; i <= 7; i++) {
+		switch (i) {
+		case 0:
+			wcout << "  A" << " ";
+		case 1:
+			wcout << "B" << " ";
+		case 2:
+			wcout << "C" << " ";
+		case 3:
+			wcout << "D" << " ";
+		case 4:
+			wcout << "E" << " ";
+		case 5:
+			wcout << "F" << " ";
+		case 6:
+			wcout << "G" << " ";
+		case 7:
+			wcout << "H" << " ";
+			break;
+		}
+		break;
 	}
 
 }
