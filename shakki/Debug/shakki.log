@@ -1,4 +1,6 @@
-﻿  kayttoliittyma.cpp
+﻿  asema.cpp
+  kayttoliittyma.cpp
   main.cpp
+  nappula.cpp
   Generating Code...
-  shakki.vcxproj -> C:\Users\vahla\Desktop\teht1_VilleVahla_JereTienhaara\vaihe_1 - Opiskelijoille\Debug\shakki.exe
+  shakki.vcxproj -> C:\Users\Jere\Documents\GitHub\shakkipeli\Debug\shakki.exe

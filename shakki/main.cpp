@@ -16,4 +16,5 @@ int main()
 	ui.piirraLauta();
 	
 	return 0;
+	// TESTIKOMMENTTI 
 }
