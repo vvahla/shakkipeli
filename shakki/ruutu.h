@@ -15,3 +15,4 @@ private:
 	int _sarake;
 	int _rivi;
 };
+

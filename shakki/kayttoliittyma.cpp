@@ -114,3 +114,26 @@ void Kayttoliittyma::piirraLauta()
 	}
 
 }
+Siirto Kayttoliittyma::annaVastustajanSiirto() {
+
+	string siirtoString;
+
+	wcout << "\nAnna siirto: ";
+	cin >> siirtoString;
+
+	if (siirtoString.size() == 6) {
+		siirtoString.erase(0, 1);
+	}
+
+	int lahtoX = siirtoString[0] - 'a';
+	int lahtoY = siirtoString[1] - 1 - '0';
+	int tuloX = siirtoString[3] - 'a';
+	int tuloY = siirtoString[4] - 1 - '0';
+	Ruutu lahtoRuutu = Ruutu(lahtoX, lahtoY);
+	Ruutu tuloRuutu = Ruutu(tuloX, tuloY);
+	// wcout << "\n" << tuloX << "  " << tuloY << "   " << lahtoX << "   " << lahtoY << endl;
+	return Siirto(lahtoRuutu, tuloRuutu);
+}
+
+
+

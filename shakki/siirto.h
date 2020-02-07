@@ -1,10 +1,8 @@
 #pragma once
 #include "ruutu.h"
 
-// Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
-// että nappula.h -tiedostoa täytyy includoida.
-class Nappula;
 
+class Nappula;
 
 // Siirto kuvaa nappulan siirtymisen ruudusta toiseen, mukaanlukien erikoissiirrot
 // (linnoitus ja ohestalyönti).
@@ -26,3 +24,5 @@ private:
 	bool _lyhytLinna;
 	bool _pitkaLinna;
 };
+
+

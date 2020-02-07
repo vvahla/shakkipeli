@@ -2,6 +2,7 @@
 
 #include <list>
 #include <string>
+#include "siirto.h"
 
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
@@ -30,4 +31,24 @@ public:
 
 
 	Asema(); // Asettaa alkuaseman.
+	void paivitaAsema(Siirto* siirto);
+
+	int getSiirtovuoro();
+	void setSiirtovuoro(int vari);
+	bool getOnkoValkeaKuningasLiikkunut();
+	bool getOnkoMustaKuningasLiikkunut();
+	bool getOnkoValkeaDTliikkunut();
+	bool getOnkoValkeaKTliikkunut();
+	bool getOnkoMustaKTliikkunut();
+	bool getOnkoMustaDTliikkunut();
+
+private:
+	int siirtovuoro;
+	bool onkoValkeaKuningasLiikkunut;
+	bool onkoMustaKuningasLiikkunut;
+	bool onkoValkeaDTliikkunut;
+	bool onkoValkeaKTliikkunut;
+	bool onkoMustaDTliikkunut;
+	bool onkoMustaKTliikkunut;
+
 };

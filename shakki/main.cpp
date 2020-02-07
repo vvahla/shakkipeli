@@ -14,7 +14,15 @@ int main()
 	Asema asema;
 	Kayttoliittyma ui(&asema);
 	ui.piirraLauta();
+	while (true)
+	{
+		Siirto siirto = ui.annaVastustajanSiirto();
+		asema.paivitaAsema(&siirto);
+		ui.piirraLauta();
+
+	}
+
 	
 	return 0;
-	// TESTIKOMMENTTI 
+	
 }

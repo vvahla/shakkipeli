@@ -1,20 +1,22 @@
 #include <iostream>
 #include "asema.h"
 #include "nappula.h"
+#include "kayttoliittyma.h"
 
-Nappula* Asema::vk = new Nappula(L"\u2654", 0, VK);
-Nappula* Asema::vd = new Nappula(L"\u2655", 0, VD);
-Nappula* Asema::vt = new Nappula(L"\u2656", 0, VT);
-Nappula* Asema::vl = new Nappula(L"\u2657", 0, VL);
-Nappula* Asema::vr = new Nappula(L"\u2658", 0, VR);
-Nappula* Asema::vs = new Nappula(L"\u2659", 0, VS);
 
-Nappula* Asema::mk = new Nappula(L"\u265A", 1, MK);
-Nappula* Asema::md = new Nappula(L"\u265B", 1, MD);
-Nappula* Asema::mt = new Nappula(L"\u265C", 1, MT);
-Nappula* Asema::ml = new Nappula(L"\u265D", 1, ML);
-Nappula* Asema::mr = new Nappula(L"\u265E", 1, MR);
-Nappula* Asema::ms = new Nappula(L"\u265F", 1, MS);
+Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
+Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
+Nappula* Asema::vt = new Torni(L"\u2656", 0, VT);
+Nappula* Asema::vl = new Lahetti(L"\u2657", 0, VL);
+Nappula* Asema::vr = new Ratsu(L"\u2658", 0, VR);
+Nappula* Asema::vs = new Sotilas(L"\u2659", 0, VS);
+
+Nappula* Asema::mk = new Kuningas(L"\u265A", 1, MK);
+Nappula* Asema::md = new Daami(L"\u265B", 1, MD);
+Nappula* Asema::mt = new Torni(L"\u265C", 1, MT);
+Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
+Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
+Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 
 Asema::Asema()
@@ -63,4 +65,58 @@ Asema::Asema()
 	_lauta[6][6] = ms;
 	_lauta[6][7] = ms;
 
+}
+void Asema::paivitaAsema(Siirto* siirto)
+{
+	Ruutu alkuruutu = siirto->getAlkuruutu();
+	int x_a = alkuruutu.getRivi();
+	int y_a = alkuruutu.getSarake();
+	
+	Ruutu loppuruutu = siirto->getLoppuruutu();
+	int x_l = loppuruutu.getRivi();
+	int y_l = loppuruutu.getSarake();
+	Nappula* n = _lauta[x_a][y_a];
+	_lauta[x_a][y_a] = NULL;
+	_lauta[x_l][y_l] = n;
+
+	/*Muuta asema - luokan tilaa annetulla siirrolla(siirto saadaan parametrina).Ts.Rg1 - f3.g1 - ruutu tyhjä ja f3 ruutu nappula olio.
+
+		a) Selvitä siirto oliosta lähtöruudun x ja y koordinaatti
+		b) Selvitä siirto oliosta tuloruudun x ja y koordinaatti
+		c) Ota talteen lähtöpaikassa oleva nappula
+		c) Laita lähtöpaikkaan null
+		d) Laita tulopaikkaan juuri talteen ottamasi nappula*/
+}
+
+bool Asema::getOnkoMustaDTliikkunut()
+{
+	return onkoMustaDTliikkunut;
+}
+bool Asema::getOnkoMustaKTliikkunut()
+{
+	return onkoMustaKTliikkunut;
+}
+bool Asema::getOnkoMustaKuningasLiikkunut()
+{
+	return onkoMustaDTliikkunut;
+}
+bool Asema::getOnkoValkeaDTliikkunut()
+{
+	return onkoValkeaDTliikkunut;
+}
+bool Asema::getOnkoValkeaKTliikkunut()
+{
+	return onkoValkeaKTliikkunut;
+}
+bool Asema::getOnkoValkeaKuningasLiikkunut()
+{
+	return onkoValkeaKuningasLiikkunut;
+}
+int Asema::getSiirtovuoro()
+{
+	return siirtovuoro;
+}
+void Asema::setSiirtovuoro(int vari)
+{
+	siirtovuoro = vari;
 }
