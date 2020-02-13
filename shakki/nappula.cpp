@@ -10,7 +10,142 @@ using namespace std;
 
 void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
+	int lahto_x = ruutu->getRivi();
+	int lahto_y = ruutu->getSarake();
+	int lahtoruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+	int tuloruudunNappulanVari;
 
+	//OIKEALLE
+	while (lahto_x < 8)
+	{
+		Nappula* n = asema->_lauta[lahto_x][lahto_y];
+		if (n == nullptr)
+		{
+			// tallennetaan
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+		else
+		{
+			// värien vertailu
+			tuloruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+			if (lahtoruudunNappulanVari == tuloruudunNappulanVari)
+			{
+				break;
+			}
+			else
+			{
+				Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+				Siirto siirto(*ruutu, tulo_ruutu);
+				lista.push_back(siirto);
+				break;
+			}
+		}
+		lahto_x++;
+	}
+
+
+	//VASEMMALLE
+	lahto_x = ruutu->getRivi() - 1;
+	lahto_y = ruutu->getSarake() - 1;
+
+	while (lahto_x > -1)
+	{
+		Nappula* n = asema->_lauta[lahto_x][lahto_y];
+		if (n == nullptr)
+		{
+			// tallennetaan
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+		else
+		{
+			// värien vertailu
+			tuloruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+			if (lahtoruudunNappulanVari == tuloruudunNappulanVari)
+			{
+				break;
+			}
+			else
+			{
+				Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+				Siirto siirto(*ruutu, tulo_ruutu);
+				lista.push_back(siirto);
+				break;
+			}
+		}
+		lahto_x--;
+	}
+
+	//ALAS
+	lahto_x = ruutu->getRivi() + 1;
+	lahto_y = ruutu->getSarake() - 1;
+	while (lahto_y > -1)
+	{
+		// oikealle ja alas
+		Nappula* n = asema->_lauta[lahto_x][lahto_y];
+		if (n == nullptr)
+		{
+			// tallennetaan
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+		else
+		{
+			// värien vertailu
+			tuloruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+			if (lahtoruudunNappulanVari == tuloruudunNappulanVari)
+			{
+				break;
+			}
+			else
+			{
+				Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+				Siirto siirto(*ruutu, tulo_ruutu);
+				lista.push_back(siirto);
+				break;
+			}
+		}
+		lahto_y--;
+	}
+
+
+	//YLÖS
+	lahto_x = ruutu->getRivi() - 1;
+	lahto_y = ruutu->getSarake() + 1;
+
+	while (lahto_y < 8)
+	{
+		// vasemmalle ja ylös
+		Nappula* n = asema->_lauta[lahto_x][lahto_y];
+		if (n == nullptr)
+		{
+			// tallennetaan
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+		else
+		{
+			// värien vertailu
+			tuloruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+			if (lahtoruudunNappulanVari == tuloruudunNappulanVari)
+			{
+				break;
+			}
+			else
+			{
+				Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y);
+				Siirto siirto(*ruutu, tulo_ruutu);
+				lista.push_back(siirto);
+				break;
+			}
+		}
+		lahto_y++;
+	}
 }
 
 
@@ -357,8 +492,108 @@ void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema,
 void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	// valkea = 0 musta = 1 
-	// ville
 	
+	int lahto_x = ruutu->getRivi();
+	int lahto_y = ruutu->getSarake();
+	int lahtoruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+
+	bool voidaankoTehdaTuplasiirto = true;
+
+	//VALKOINEN
+	if (vari == 0) {
+
+		//Tsekataan ekaksi voidaanko tehdä "tuplasiirto"
+		if (voidaankoTehdaTuplasiirto == true) {
+			Nappula* n = asema->_lauta[lahto_x][lahto_y + 2];
+			if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+			{
+				// tallennetaan
+				Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y + 2);
+				Siirto siirto(*ruutu, tulo_ruutu);
+				lista.push_back(siirto);
+
+				//falselle niin ei voida enää
+				voidaankoTehdaTuplasiirto = false;
+			}
+		}
+
+		//Sitten kaikki normisiirrot
+		Nappula* n = asema->_lauta[lahto_x][lahto_y + 1];
+		if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+		{
+			// tallennetaan
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+		
+
+		//Tsekataan 2 "viistossa" olevaa ruutua, jos niissä on vihuja. Voidaan syödä jos on.
+		int tuloruudun1NappulanVari = asema->_lauta[lahto_x + 1][lahto_y + 1]->getVari();
+		int tuloruudun2NappulanVari = asema->_lauta[lahto_x - 1][lahto_y + 1]->getVari();
+
+		if (lahtoruudunNappulanVari != tuloruudun1NappulanVari)
+		{
+			//eka viisto
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+
+			//toka viisto
+			Ruutu tulo_ruutu2 = Ruutu(lahto_x - 1, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu2);
+			lista.push_back(siirto);
+		}
+
+	}
+	//MUSTA
+	else if (vari == 1) {
+
+		//Tsekataan ekaksi voidaanko tehdä "tuplasiirto"
+		if (voidaankoTehdaTuplasiirto == true) {
+			Nappula* n = asema->_lauta[lahto_x][lahto_y - 2];
+			if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+			{
+				// tallennetaan
+				Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y - 2);
+				Siirto siirto(*ruutu, tulo_ruutu);
+				lista.push_back(siirto);
+
+				//Falselle niin ei voida enää
+				voidaankoTehdaTuplasiirto = false;
+			}
+		}
+
+
+		//Sitten kaikki normisiirrot
+		Nappula* n = asema->_lauta[lahto_x][lahto_y - 1];
+		if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+		{
+			// tallennetaan
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y - 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+
+		//Tsekataan 2 "viistossa" olevaa ruutua, jos niissä on vihuja. Voidaan syödä jos on.
+		int tuloruudun1NappulanVari = asema->_lauta[lahto_x + 1][lahto_y - 1]->getVari();
+		int tuloruudun2NappulanVari = asema->_lauta[lahto_x - 1][lahto_y - 1]->getVari();
+
+		if (lahtoruudunNappulanVari != tuloruudun1NappulanVari)
+		{
+			//eka viisto
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+
+			//toka viisto
+			Ruutu tulo_ruutu2 = Ruutu(lahto_x - 1, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu2);
+			lista.push_back(siirto);
+		}
+	}
+
 }
 
 

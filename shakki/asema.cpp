@@ -88,6 +88,29 @@ void Asema::paivitaAsema(Siirto* siirto)
 		d) Laita tulopaikkaan juuri talteen ottamasi nappula*/
 }
 
+void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
+
+	//käydään lauta läpi eka
+	for (int x = 7; x >= 0; x--) {
+		for (int y = 0; y < 8; y++) {
+
+			Nappula* n = _lauta[x][y];
+
+			if (n != nullptr) {
+				//tallennetaan ruutu
+				Ruutu* haluttuRuutu = &Ruutu(x, y);
+
+				//anna siirrot
+				n->annaSiirrot(lista, haluttuRuutu, this, n->getVari);
+				//???
+			}
+
+
+		}
+	}
+
+}
+
 bool Asema::getOnkoMustaDTliikkunut()
 {
 	return onkoMustaDTliikkunut;
