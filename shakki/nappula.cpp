@@ -149,7 +149,179 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 void Ratsu::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
-	// ville
+	int lahto_x = ruutu->getRivi();
+	int lahto_y = ruutu->getSarake();
+	int lahtoruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+	int tuloruudunNappulanVari;
+
+	//kaksi ylös ja yksi oikealle 
+	Nappula* n = asema->_lauta[lahto_x + 1][lahto_y+2];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y+2);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x + 1][lahto_y+2]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y+2);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//kaksi ylös ja yksi vasemmalle
+	n = asema->_lauta[lahto_x - 1][lahto_y + 2];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y + 2);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 1][lahto_y + 2]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y + 2);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	// kaksi vasemmalle ja yksi ylös
+	n = asema->_lauta[lahto_x - 2][lahto_y + 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x -2, lahto_y + 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 2][lahto_y + 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 2, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	// kaksi vasemmalle ja yksi alas
+	n = asema->_lauta[lahto_x - 1][lahto_y + 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 2, lahto_y - 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 2][lahto_y - 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 2, lahto_y - 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//kaksi alas ja yksi vasemmalle
+	n = asema->_lauta[lahto_x - 1][lahto_y - 2];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y -2);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 1][lahto_y - 2]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y - 2);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	// kaksi alas ja yksi oikealle
+	n = asema->_lauta[lahto_x + 1][lahto_y - 2];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y - 2);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x + 1][lahto_y - 2]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y - 2);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//kaksi oikealle ja yksi alas
+	n = asema->_lauta[lahto_x +2][lahto_y - 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x + 2, lahto_y - 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x + 2][lahto_y - 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 2, lahto_y - 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	// kaksi oikealle ja yksi ylös
+	n = asema->_lauta[lahto_x + 2][lahto_y + 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x + 2, lahto_y + 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x + 2][lahto_y + 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 2, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
 }
 
 
