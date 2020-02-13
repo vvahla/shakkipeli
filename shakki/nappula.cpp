@@ -171,6 +171,179 @@ void Daami::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 void Kuningas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
+	int lahto_x = ruutu->getRivi();
+	int lahto_y = ruutu->getSarake();
+	int lahtoruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
+	int tuloruudunNappulanVari;
+	
+	//yksi oikealle
+	Nappula* n = asema->_lauta[lahto_x+1][lahto_y];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x+1, lahto_y);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x+1][lahto_y]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x+1, lahto_y);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+		
+	}
+	//yksi oikealle ja yksi ylös
+	n = asema->_lauta[lahto_x + 1][lahto_y+1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y+1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x + 1][lahto_y+1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y+1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	// yksi ylös
+	n = asema->_lauta[lahto_x][lahto_y + 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y + 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x][lahto_y + 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	// yksi vasemmalle ja yksi ylös
+	n = asema->_lauta[lahto_x - 1][lahto_y + 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y + 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 1][lahto_y + 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y + 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//yksi vasemmalle
+	n = asema->_lauta[lahto_x - 1][lahto_y];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 1][lahto_y]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//yksi vasemmalle ja yksi alas 
+	n = asema->_lauta[lahto_x - 1][lahto_y - 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y - 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 1][lahto_y - 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y - 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//yksi alas
+	n = asema->_lauta[lahto_x][lahto_y - 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y - 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x][lahto_y - 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y - 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
+	//yksi oikealle ja yksi alas
+	n = asema->_lauta[lahto_x - 1][lahto_y - 1];
+	if (n == nullptr) // jos tyhjä ruutu niin siihen voi siirtyä, lisätään listaan
+	{
+		// tallennetaan
+		Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y - 1);
+		Siirto siirto(*ruutu, tulo_ruutu);
+		lista.push_back(siirto);
+	}
+	else // jos ei ole tyhjä niin tsekataan onko siinä vastustajan nappula, sillon voi siirtyä (ja syödä) joten lisätään listaan
+	{
+		// värien vertailu
+		tuloruudunNappulanVari = asema->_lauta[lahto_x - 1][lahto_y - 1]->getVari();
+		if (lahtoruudunNappulanVari != tuloruudunNappulanVari)
+		{
+			Ruutu tulo_ruutu = Ruutu(lahto_x - 1, lahto_y - 1);
+			Siirto siirto(*ruutu, tulo_ruutu);
+			lista.push_back(siirto);
+		}
+
+	}
 	/*perusidea on että kaikki viereiset ruudut ovat sallittuja. kuten tornilla ja lähetillä,
 	oman nappulan päälle ei voi mennä ja vastustajan nappulan voi syödä.
 
@@ -185,6 +358,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 {
 	// valkea = 0 musta = 1 
 	// ville
+	
 }
 
 

@@ -40,7 +40,9 @@ public:
 	bool getOnkoValkeaDTliikkunut();
 	bool getOnkoValkeaKTliikkunut();
 	bool getOnkoMustaKTliikkunut();
-	bool getOnkoMustaDTliikkunut();
+	bool getOnkoMustaDTliikkunut();	
+	void annaLaillisetSiirrot(std::list<Siirto>& lista);
+	// sisällä kutsutaan getSiirtovuoro() >> looppi joka käy koko laudan läpi ja tsekkaa if (getSiirtovuoro() == nappulan.getväri()) >> kutsuu sille nappulalle annasiirrot
 
 private:
 	int siirtovuoro;
