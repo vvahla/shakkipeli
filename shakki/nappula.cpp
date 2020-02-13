@@ -15,6 +15,7 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	int lahtoruudunNappulanVari = asema->_lauta[lahto_x][lahto_y]->getVari();
 	int tuloruudunNappulanVari;
 
+	lahto_x++;
 	//OIKEALLE
 	while (lahto_x < 8)
 	{
@@ -48,7 +49,6 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 	//VASEMMALLE
 	lahto_x = ruutu->getRivi() - 1;
-	lahto_y = ruutu->getSarake() - 1;
 
 	while (lahto_x > -1)
 	{
@@ -80,7 +80,6 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 	}
 
 	//ALAS
-	lahto_x = ruutu->getRivi() + 1;
 	lahto_y = ruutu->getSarake() - 1;
 	while (lahto_y > -1)
 	{
@@ -114,12 +113,11 @@ void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, in
 
 
 	//YLÖS
-	lahto_x = ruutu->getRivi() - 1;
 	lahto_y = ruutu->getSarake() + 1;
 
 	while (lahto_y < 8)
 	{
-		// vasemmalle ja ylös
+		// ylös
 		Nappula* n = asema->_lauta[lahto_x][lahto_y];
 		if (n == nullptr)
 		{
@@ -525,6 +523,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y + 1);
 			Siirto siirto(*ruutu, tulo_ruutu);
 			lista.push_back(siirto);
+			voidaankoTehdaTuplasiirto = false;
 		}
 		
 
@@ -538,11 +537,13 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y + 1);
 			Siirto siirto(*ruutu, tulo_ruutu);
 			lista.push_back(siirto);
+			voidaankoTehdaTuplasiirto = false;
 
 			//toka viisto
 			Ruutu tulo_ruutu2 = Ruutu(lahto_x - 1, lahto_y + 1);
 			Siirto siirto(*ruutu, tulo_ruutu2);
 			lista.push_back(siirto);
+			voidaankoTehdaTuplasiirto = false;
 		}
 
 	}
@@ -573,6 +574,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Ruutu tulo_ruutu = Ruutu(lahto_x, lahto_y - 1);
 			Siirto siirto(*ruutu, tulo_ruutu);
 			lista.push_back(siirto);
+			voidaankoTehdaTuplasiirto = false;
 		}
 
 
@@ -586,11 +588,13 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Ruutu tulo_ruutu = Ruutu(lahto_x + 1, lahto_y + 1);
 			Siirto siirto(*ruutu, tulo_ruutu);
 			lista.push_back(siirto);
+			voidaankoTehdaTuplasiirto = false;
 
 			//toka viisto
 			Ruutu tulo_ruutu2 = Ruutu(lahto_x - 1, lahto_y + 1);
 			Siirto siirto(*ruutu, tulo_ruutu2);
 			lista.push_back(siirto);
+			voidaankoTehdaTuplasiirto = false;
 		}
 	}
 
