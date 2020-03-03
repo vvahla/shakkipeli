@@ -45,6 +45,8 @@ public:
 	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
 	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari);
 
+	double evaluoi();
+
 	bool onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari);
 
 	// sisällä kutsutaan getSiirtovuoro() >> looppi joka käy koko laudan läpi ja tsekkaa if (getSiirtovuoro() == nappulan.getväri()) >> kutsuu sille nappulalle annasiirrot

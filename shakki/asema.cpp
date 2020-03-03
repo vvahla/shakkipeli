@@ -293,3 +293,49 @@ void Asema::setSiirtovuoro(int vari)
 {
 	siirtovuoro = vari;
 }
+
+double Asema::evaluoi() {
+
+	double arvo = 0;
+
+	for (int x = 0; x < 8; x++)
+	{
+		for (int y = 0; y < 8; y++)
+		{
+			if (_lauta[x][y] != NULL) {
+				Nappula* nappula = _lauta[x][y];
+
+				//Valkoiset
+				if (nappula->getVari() == 1) {
+					if (nappula->getKoodi == VD)
+						arvo += 9;
+					else if (nappula->getKoodi == VT)
+						arvo += 5;
+					else if (nappula->getKoodi == VL)
+						arvo += 3.25;
+					else if (nappula->getKoodi == VR)
+						arvo += 3;
+					else if (nappula->getKoodi == VS)
+						arvo += 1;
+				}
+				//Mustat
+				else if (nappula->getVari() == 0) {
+					if (nappula->getKoodi == MD)
+						arvo -= 9;
+					else if (nappula->getKoodi == MT)
+						arvo -= 5;
+					else if (nappula->getKoodi == ML)
+						arvo -= 3.25;
+					else if (nappula->getKoodi == MR)
+						arvo -= 3;
+					else if (nappula->getKoodi == MS)
+						arvo -= 1;
+				}
+
+			}
+		}
+	}
+
+	return arvo;
+
+}
