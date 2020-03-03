@@ -18,7 +18,6 @@ Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
 Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
 Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
-
 Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulalla "NULL", koska muuten ruuduissa satunnaista tauhkaa
@@ -66,6 +65,7 @@ Asema::Asema()
 	_lauta[6][7] = ms;
 
 }
+
 void Asema::paivitaAsema(Siirto* siirto)
 {
 	Ruutu alkuruutu = siirto->getAlkuruutu();
@@ -88,26 +88,176 @@ void Asema::paivitaAsema(Siirto* siirto)
 		d) Laita tulopaikkaan juuri talteen ottamasi nappula*/
 }
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
-
-	//k‰yd‰‰n lauta l‰pi eka
-	for (int x = 7; x >= 0; x--) {
-		for (int y = 0; y < 8; y++) {
-
-			Nappula* n = _lauta[x][y];
-
-			if (n != nullptr) {
-				//tallennetaan ruutu
-				Ruutu* haluttuRuutu = &Ruutu(x, y);
-
-				//anna siirrot
-				n->annaSiirrot(lista, haluttuRuutu, this, n->getVari);
-				//???
+bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+{
+	std::list<Siirto> vastustajaSiirrotLista;
+	//V‰reitt‰in k‰yd‰‰n l‰pi kaikki ruudut ja niiss‰ olevan nappulan siirrot ker‰t‰‰n vastustajan siirtolistaan
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			if (this->_lauta[i][j] == NULL) {
+				continue;
 			}
-
-
+			if (this->_lauta[i][j]->getVari() == vastustajanVari)
+				this->_lauta[i][j]->annaSiirrot(vastustajaSiirrotLista, &Ruutu(i, j), this, vastustajanVari); // myˆh.sidonta
 		}
 	}
+	// K‰yd‰‰n vastustajaSiirtoLista l‰pi ja jos sielt‰ lˆytyy tarkasteltava ruutu niin tiedet‰‰n sen olevan uhattu
+	bool ruutuOk = true;
+	for (auto s : vastustajaSiirrotLista)
+	{
+		if (ruutu->getSarake() == s.getLoppuruutu().getSarake() && ruutu->getRivi() == s.getLoppuruutu().getRivi()) {
+			ruutuOk = false;
+			break;
+		}
+	}
+	return ruutuOk;
+}
+
+void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
+{
+	// poistaa listasta siirrot jotka viev‰t oman kuninkaan shakkiin
+	// k‰yd‰‰n saatua siirtolistaa l‰pi ja jos siell‰ oleva siirto asettaa kuninkaan shakkiin, 
+	// niin siirto poistetaan listasta
+	int kuninkaanX;
+	int kuninkaanY;
+	if (vari == 0) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this->_lauta[i][j] == NULL)
+					continue;
+				if (this->_lauta[i][j]->getKoodi() == VK) {
+					kuninkaanX = i;
+					kuninkaanY = j;
+					break;
+				}
+			}
+		}
+	}
+	if (vari == 1) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (this->_lauta[i][j] == NULL)
+					continue;
+				if (this->_lauta[i][j]->getKoodi() == MK) {
+					kuninkaanX = i;
+					kuninkaanY = j;
+					break;
+				}
+			}
+		}
+	}
+	// Jotta ei jouduta perumaan oikeaan asemaan tehty‰ siirtoa
+	Asema testiAsema;
+	std::list<Siirto> siivottuSiirrotLista;
+	for (auto s : lista) {
+		testiAsema = *this;
+		testiAsema.paivitaAsema(&s);
+		int x, y;
+
+		// Kuninkaan siirto?
+		if (s.onkoLyhytLinna())
+		{
+			x = 6;
+			if (this->getSiirtovuoro() == 0)
+				y = 0;
+			else
+				y = 7;
+		}
+		else if (s.onkoPitkalinna())
+		{
+			x = 2;
+			if (this->getSiirtovuoro() == 0)
+				y = 0;
+			else
+				y = 7;
+		}
+		else
+		{
+			Nappula* siirtyva = this->_lauta[s.getAlkuruutu().getSarake()][s.getAlkuruutu().getRivi()];
+			if (siirtyva->getKoodi() == VK || siirtyva->getKoodi() == MK)
+			{
+				x = s.getLoppuruutu().getSarake();
+				y = s.getLoppuruutu().getRivi();
+			}
+			else
+			{
+				// Ei ole, kuninkaan sijainti sama kuin ennen siirron s kokeilua
+				x = kuninkaanX;
+				y = kuninkaanY;
+			}
+		}
+
+		// huom !vari
+		if (testiAsema.onkoRuutuUhattu(&Ruutu(x, y), !vari) == true) {
+			siivottuSiirrotLista.push_back(s);
+		}
+	}
+	lista = siivottuSiirrotLista;
+}
+
+void Asema::annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari)
+{
+	//// Linnoituksien huomioiminen
+	//// 1. Kuningas ei saa olla liikkunut
+	//// 2. Torni ei saa olla liikkunut
+	//// 3. Kuningas ei saa olla shakattuna
+	//// 4. Ruutujen pit‰‰ olla tyhj‰t
+	//// 5. Ruudut eiv‰t saa olla uhattuja
+	if (vari == 0) {
+		//valkean lyhyt linna
+		if (!this->getOnkoValkeaKuningasLiikkunut() && !this->getOnkoValkeaKTliikkunut()
+			&& this->onkoRuutuUhattu(&Ruutu(4, 0), !vari)
+			&& this->onkoRuutuUhattu(&Ruutu(5, 0), !vari) && this->onkoRuutuUhattu(&Ruutu(6, 0), !vari)
+			&& this->_lauta[5][0] == NULL && this->_lauta[6][0] == NULL) {
+			//p‰ivitet‰‰n listaan lyhytlinna
+			lista.push_back(Siirto(true, false)); // lis‰t‰‰n listaan lyhyt linna
+		}
+		//valkean pitk‰ linna
+		if (!this->getOnkoValkeaKuningasLiikkunut() && !this->getOnkoValkeaDTliikkunut()
+			&& this->onkoRuutuUhattu(&Ruutu(4, 0), !vari)
+			&& this->onkoRuutuUhattu(&Ruutu(3, 0), !vari) && this->onkoRuutuUhattu(&Ruutu(3, 0), !vari)
+			&& this->_lauta[3][0] == NULL && this->_lauta[2][0] == NULL) {
+			//p‰ivitet‰‰n listaan lyhytlinna
+			lista.push_back(Siirto(false, true)); // lis‰t‰‰n listaan lyhyt linna
+		}
+	}
+	if (vari == 1) {
+		//mustan lyhyt linna
+		if (!this->getOnkoMustaKuningasLiikkunut() && !this->getOnkoMustaKTliikkunut()
+			&& this->onkoRuutuUhattu(&Ruutu(4, 7), !vari)
+			&& this->onkoRuutuUhattu(&Ruutu(5, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(6, 7), !vari)
+			&& this->_lauta[5][7] == NULL && this->_lauta[6][7] == NULL) {
+			//p‰ivitet‰‰n listaan lyhytlinna
+			lista.push_back(Siirto(true, false)); // lis‰t‰‰n listaan lyhyt linna
+		}
+		//mustan pitk‰ linna
+		if (!this->getOnkoMustaKuningasLiikkunut() && !this->getOnkoMustaDTliikkunut()
+			&& this->onkoRuutuUhattu(&Ruutu(4, 7), !vari)
+			&& this->onkoRuutuUhattu(&Ruutu(3, 7), !vari) && this->onkoRuutuUhattu(&Ruutu(3, 7), !vari)
+			&& this->_lauta[3][7] == NULL && this->_lauta[2][7] == NULL) {
+			//p‰ivitet‰‰n listaan lyhytlinna
+			lista.push_back(Siirto(false, true)); // lis‰t‰‰n listaan lyhyt linna
+		}
+	}
+}
+
+void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
+	int vari = this->getSiirtovuoro();
+
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			//Ei kysele tyhjilt‰ ruuduilta nappulan nime‰
+			if (this->_lauta[i][j] == NULL) {
+				continue;
+			}
+			if (this->_lauta[i][j]->getVari() != vari) {
+				continue;
+			}
+			this->_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, vari); // myˆh‰inen sidonta!
+		}
+	}
+	this->annaLinnoitusSiirrot(lista, vari);
+	this->huolehdiKuninkaanShakeista(lista, vari);
 
 }
 
