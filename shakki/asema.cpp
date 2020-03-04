@@ -307,28 +307,28 @@ double Asema::evaluoi() {
 
 				//Valkoiset
 				if (nappula->getVari() == 1) {
-					if (nappula->getKoodi == VD)
+					if (nappula->getKoodi() == VD)
 						arvo += 9;
-					else if (nappula->getKoodi == VT)
+					else if (nappula->getKoodi() == VT)
 						arvo += 5;
-					else if (nappula->getKoodi == VL)
+					else if (nappula->getKoodi() == VL)
 						arvo += 3.25;
-					else if (nappula->getKoodi == VR)
+					else if (nappula->getKoodi() == VR)
 						arvo += 3;
-					else if (nappula->getKoodi == VS)
+					else if (nappula->getKoodi() == VS)
 						arvo += 1;
 				}
 				//Mustat
 				else if (nappula->getVari() == 0) {
-					if (nappula->getKoodi == MD)
+					if (nappula->getKoodi() == MD)
 						arvo -= 9;
-					else if (nappula->getKoodi == MT)
+					else if (nappula->getKoodi() == MT)
 						arvo -= 5;
-					else if (nappula->getKoodi == ML)
+					else if (nappula->getKoodi() == ML)
 						arvo -= 3.25;
-					else if (nappula->getKoodi == MR)
+					else if (nappula->getKoodi() == MR)
 						arvo -= 3;
-					else if (nappula->getKoodi == MS)
+					else if (nappula->getKoodi() == MS)
 						arvo -= 1;
 				}
 
@@ -336,6 +336,6 @@ double Asema::evaluoi() {
 		}
 	}
 
-	return arvo;
+	return arvo * 0,02532; // palauttaa -1 ja 1 väliltä arvon
 
 }

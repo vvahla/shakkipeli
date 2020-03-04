@@ -713,8 +713,8 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 			//toka viisto
 			Ruutu tulo_ruutu2 = Ruutu(lahto_x - 1, lahto_y + 1);
-			Siirto siirto(*ruutu, tulo_ruutu2);
-			lista.push_back(siirto);
+			Siirto siirto_2(*ruutu, tulo_ruutu2);
+			lista.push_back(siirto_2);
 			voidaankoTehdaTuplasiirto = false;
 		}
 
@@ -764,8 +764,8 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 			//toka viisto
 			Ruutu tulo_ruutu2 = Ruutu(lahto_x - 1, lahto_y + 1);
-			Siirto siirto(*ruutu, tulo_ruutu2);
-			lista.push_back(siirto);
+			Siirto siirto_2(*ruutu, tulo_ruutu2);
+			lista.push_back(siirto_2);
 			voidaankoTehdaTuplasiirto = false;
 		}
 	}
