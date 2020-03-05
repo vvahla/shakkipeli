@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include "siirto.h"
+#include "minmaxpaluu.h"
 
 
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitellä Nappula-osoittimia ilman,
@@ -48,6 +49,10 @@ public:
 	double evaluoi();
 
 	bool onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari);
+
+	MinMaxPaluu maxi(int syvyys);
+	MinMaxPaluu mini(int syvyys);
+	MinMaxPaluu minimax(int syvyys);
 
 	// sisällä kutsutaan getSiirtovuoro() >> looppi joka käy koko laudan läpi ja tsekkaa if (getSiirtovuoro() == nappulan.getväri()) >> kutsuu sille nappulalle annasiirrot
 

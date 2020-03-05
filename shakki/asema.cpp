@@ -64,6 +64,13 @@ Asema::Asema()
 	_lauta[6][6] = ms;
 	_lauta[6][7] = ms;
 
+	siirtovuoro = 0;
+	onkoValkeaKuningasLiikkunut = false;
+	onkoMustaKuningasLiikkunut = false;
+	onkoValkeaDTliikkunut = false;
+	onkoValkeaKTliikkunut = false;
+	onkoMustaDTliikkunut = false;
+	onkoMustaKTliikkunut = false;
 }
 
 void Asema::paivitaAsema(Siirto* siirto)
@@ -253,6 +260,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
 			if (this->_lauta[i][j]->getVari() != vari) {
 				continue;
 			}
+			
 			this->_lauta[i][j]->annaSiirrot(lista, &Ruutu(i, j), this, vari); // myöhäinen sidonta!
 		}
 	}
@@ -302,40 +310,197 @@ double Asema::evaluoi() {
 	{
 		for (int y = 0; y < 8; y++)
 		{
-			if (_lauta[x][y] != NULL) {
-				Nappula* nappula = _lauta[x][y];
+			if (this->_lauta[x][y] != NULL) {
+				int nappula = this->_lauta[x][y]->getKoodi();
 
 				//Valkoiset
-				if (nappula->getVari() == 1) {
-					if (nappula->getKoodi() == VD)
+				
+					if (nappula == VD)
 						arvo += 9;
-					else if (nappula->getKoodi() == VT)
+					else if (nappula == VT)
 						arvo += 5;
-					else if (nappula->getKoodi() == VL)
+					else if (nappula == VL)
 						arvo += 3.25;
-					else if (nappula->getKoodi() == VR)
+					else if (nappula == VR)
 						arvo += 3;
-					else if (nappula->getKoodi() == VS)
+					else if (nappula == VS)
 						arvo += 1;
-				}
+				
 				//Mustat
-				else if (nappula->getVari() == 0) {
-					if (nappula->getKoodi() == MD)
+				
+					if (nappula == MD)
 						arvo -= 9;
-					else if (nappula->getKoodi() == MT)
+					else if (nappula == MT)
 						arvo -= 5;
-					else if (nappula->getKoodi() == ML)
+					else if (nappula == ML)
 						arvo -= 3.25;
-					else if (nappula->getKoodi() == MR)
+					else if (nappula == MR)
 						arvo -= 3;
-					else if (nappula->getKoodi() == MS)
+					else if (nappula == MS)
 						arvo -= 1;
-				}
 
 			}
 		}
 	}
 
-	return arvo * 0,02532; // palauttaa -1 ja 1 väliltä arvon
+	return arvo * 0.02532; // palauttaa arvon -1 ja 1 väliltä
 
+}
+
+MinMaxPaluu Asema::minimax(int syvyys)
+{
+	MinMaxPaluu paluuarvo;
+
+	// Generoidaan aseman lailliset siirrot.
+	std::list<Siirto> siirrot;
+	annaLaillisetSiirrot(siirrot);
+
+	// Rekursion kantatapaus 1: peli on loppu
+	if (siirrot.size() == 0)
+	{
+		// *** TODO ***
+		// tutki kumpi voitti ja palauta sen mukainen arvo (tasapeli 0).
+		paluuarvo._evaluointiArvo = 0;
+		return paluuarvo;
+	}
+
+	// Rekursion kantatapaus 2: katkaisusyvyydessä
+	if (syvyys == 0)
+	{
+		paluuarvo._evaluointiArvo = evaluoi();
+		return paluuarvo;
+	}
+
+	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
+	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
+	paluuarvo._evaluointiArvo = (siirtovuoro == 0 ? -1000000 : 100000);
+	for (auto s : siirrot)
+	{
+		// Seuraaja-asema (tehdään nykyisessä asemassa siirto s).
+		Asema uusi_asema = *this;
+		uusi_asema.paivitaAsema(&s);
+
+		// Rekursiivinen kutsu.
+		MinMaxPaluu arvo = uusi_asema.minimax(syvyys - 1);
+
+		// Tutkitaan ollaan löydetty uusi paras siirto.
+		if
+			(
+			(siirtovuoro == 0 && arvo._evaluointiArvo > paluuarvo._evaluointiArvo) ||
+				(siirtovuoro == 1 && arvo._evaluointiArvo < paluuarvo._evaluointiArvo)
+				)
+		{
+			// Löydettiin uusi paras siirto.
+			paluuarvo._evaluointiArvo = arvo._evaluointiArvo;
+			paluuarvo._parasSiirto = arvo._parasSiirto;
+		}
+	}
+	return paluuarvo;
+}
+MinMaxPaluu Asema::maxi(int syvyys)
+{
+	std::list<Siirto> lista;
+	Ruutu kuninkaanRuutu;
+	this->annaLaillisetSiirrot(lista);
+	double arvo;
+	Asema uusiAsema;
+	Siirto _parasSiirto;
+	MinMaxPaluu paluu;
+	// Tarkasta onko matti tai patti, jos on niin poistu asap, matti -100000, patti 0
+	if (lista.size() == 0) {
+		//selvitä kuninkaan ruutu
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				if (this->_lauta[x][y] != NULL) {
+					if (this->_lauta[x][y]->getKoodi() == VK) {
+						kuninkaanRuutu.setSarake(x);
+						kuninkaanRuutu.setRivi(y);
+					}
+				}
+			}
+		}
+		//matti
+		if (this->onkoRuutuUhattu(&kuninkaanRuutu, 1)) {
+			paluu._evaluointiArvo = -1000000;
+			return paluu;
+		}
+		//patti
+		if (!this->onkoRuutuUhattu(&kuninkaanRuutu, 1)) {
+			paluu._evaluointiArvo = 0;
+			return paluu;
+		}
+	}
+	// Jos ei ole matti tai patti niin käy pelipuuta läpi rekursiivisesti
+	if (syvyys == 0) { // rekursion kanta
+		paluu._evaluointiArvo = this->evaluoi();
+		return 	paluu;
+	}
+	double maximi = -100000; // iso arvo jotta varmasti paranee
+	for (auto s : lista) {
+		uusiAsema = *this;
+		uusiAsema.paivitaAsema(&s);
+		arvo = uusiAsema.mini(syvyys - 1)._evaluointiArvo;
+		if (arvo > maximi) {
+			maximi = arvo;
+			_parasSiirto = s;
+		}
+	}
+	paluu._evaluointiArvo = maximi;
+	paluu._parasSiirto = _parasSiirto;
+	return paluu;
+}
+
+
+MinMaxPaluu Asema::mini(int syvyys)
+{
+	std::list<Siirto> lista;
+	Ruutu kuninkaanRuutu;
+	this->annaLaillisetSiirrot(lista);
+	double arvo;
+	Asema uusiAsema;
+	Siirto _parasSiirto;
+	MinMaxPaluu paluu;
+	// Tarkasta onko matti tai patti, jos on niin poistu asap, matti -100000, patti 0
+	if (lista.size() == 0) {
+		//selvitä kuninkaan ruutu
+		for (int x = 0; x < 8; x++) {
+			for (int y = 0; y < 8; y++) {
+				if (this->_lauta[x][y] != NULL) {
+					if (this->_lauta[x][y]->getKoodi() == MK) {
+						kuninkaanRuutu.setSarake(x);
+						kuninkaanRuutu.setRivi(y);
+					}
+				}
+			}
+		}
+		//matti
+		if (this->onkoRuutuUhattu(&kuninkaanRuutu, 0)) {
+			paluu._evaluointiArvo = 1000000;
+			return paluu;
+		}
+		//patti
+		if (!this->onkoRuutuUhattu(&kuninkaanRuutu, 0)) {
+			paluu._evaluointiArvo = 0;
+			return paluu;
+		}
+	}
+	// Jos ei ole matti tai patti niin käy pelipuuta läpi rekursiivisesti
+	if (syvyys == 0) { // rekursion kanta
+		paluu._evaluointiArvo = this->evaluoi();
+		//paluu._parasSiirto = MITÄ
+		return 	paluu;
+	}
+	double minimi = 100000; // iso arvo jotta varmasti paranee
+	for (auto s : lista) {
+		uusiAsema = *this;
+		uusiAsema.paivitaAsema(&s);
+		arvo = uusiAsema.maxi(syvyys - 1)._evaluointiArvo;
+		if (arvo < minimi) {
+			minimi = arvo;
+			_parasSiirto = s;
+		}
+	}
+	paluu._evaluointiArvo = minimi;
+	paluu._parasSiirto = _parasSiirto;
+	return paluu;
 }

@@ -6,8 +6,6 @@
 using namespace std;
 
 
-
-
 void Torni::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	int lahto_x = ruutu->getRivi();

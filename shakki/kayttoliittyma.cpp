@@ -10,6 +10,21 @@
 
 using namespace std;
 
+Kayttoliittyma* Kayttoliittyma::instance = 0;
+
+Kayttoliittyma* Kayttoliittyma::getInstance()
+{
+	if (instance == 0)
+		instance = new Kayttoliittyma();
+	return instance;
+}
+int Kayttoliittyma::kysyVastustajanVari()
+{
+	int vari;
+	wcout << "Haluatko pelata valkeilla (0) vai mustilla (1)?";
+	cin >> vari;
+	return vari;
+}
 
 void Kayttoliittyma::piirraLauta()
 {
